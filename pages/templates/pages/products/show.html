@@ -1,0 +1,25 @@
+{% extends 'pages/base.html' %}
+{% load static %} 
+{% block title %} {{title}} {% endblock %}
+{% block header_title %} {{subtitle}} {% endblock %}
+{% block content %}
+<div class="card mb-3">
+ <div class="row g-0">
+ <div class="col-md-4">
+{% if product.image %}
+  <img src="{{ product.image.url }}" class="img-fluid rounded-start">
+{% else %}
+  <img src="{% static 'pages/img/air.webp' %}" class="img-fluid rounded-start">
+{% endif %}
+ </div>
+ <div class="col-md-8">
+ <div class="card-body">
+ <h5 class="card-title">
+ {{product.name}}
+ </h5>
+ <p class="card-text">{{product.description}}</p>
+ </div>
+ </div>
+ </div>
+</div>
+{% endblock %}
