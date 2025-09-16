@@ -7,47 +7,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Product, CartItem, Cart
 from django.shortcuts import get_object_or_404
-import stripe
 from django.conf import settings
+from django.db.models import Q
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
-def success_view(request):
-    return render(request, "pages/success.html")
-
-def cancel_view(request):
-    return render(request, "pages/cancel.html")
-
-def checkout_view(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-
-    # Obtener el carrito del usuario
-    cart = Cart.objects.get(user=request.user)
-    cart_items = cart.cartitem_set.all()
-    total = sum(item.get_total() for item in cart_items)
-
-    # Crear sesión de pago en Stripe
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[
-            {
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {
-                        "name": item.product.name,
-                    },
-                    "unit_amount": int(item.product.price * 100),  # en centavos
-                },
-                "quantity": item.quantity,
-            }
-            for item in cart_items
-        ],
-        mode="payment",
-        success_url="http://127.0.0.1:8000/success/",
-        cancel_url="http://127.0.0.1:8000/cancel/",
-    )
-
-    return redirect(session.url, code=303)
 
 def cart_view(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
@@ -123,7 +85,7 @@ class ProductIndexView(View):
         query = request.GET.get("q")  # obtiene lo que se busca
         if query:
             products = Product.objects.filter(
-                Q(name__icontains=query) | Q(description__icontains=query)
+                Q(name__icontains=query)
             )
         else:
             products = Product.objects.all()
@@ -132,7 +94,7 @@ class ProductIndexView(View):
             "title": "Products - Online Store",
             "subtitle": "List of products",
             "products": products,
-            "query": query,  # 👈 lo mandamos al template para no perder el texto buscado
+            "query": query,  # para que el input no pierda el texto buscado
         }
         return render(request, self.template_name, viewData)
 
