@@ -1,11 +1,66 @@
-{% extends 'pages/base.html' %}
-{% block content %}
-<div class="container mt-5">
-  <h2>Registrarse</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Crear cuenta</button>
-  </form>
-</div>
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrarse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+    <img src="{% static 'pages/img/valakia.jpeg' %}" alt="Logo Valakia" class="w-20 h-20 rounded-full mb-4">
+    <h2 class="text-2xl font-bold mb-6 text-red-900">Crear cuenta</h2>
+    <!-- Solo un formulario, personalizado abajo -->
+      <form method="post" class="w-full flex flex-col items-center space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="w-full flex flex-col items-center">
+            <label for="{{ field.id_for_label }}" class="block text-gray-700 font-medium mb-1">{{ field.label|capfirst }}</label>
+            {{ field }}
+            {% if field.help_text %}
+              {% if field.name == "password1" %}
+                <small class="text-xs text-gray-500 block mt-1 text-center">
+                  La contraseña debe tener al menos 8 caracteres, no ser solo numérica y no ser común.<br>
+                  Usa mayúsculas, minúsculas y números para mayor seguridad.
+                </small>
+              {% elif field.name == "password2" %}
+                <small class="text-xs text-gray-500 block mt-1 text-center">
+                  Repite la contraseña exactamente igual para confirmar.<br>
+                </small>
+              {% elif field.name == "username" %}
+                <small class="text-xs text-gray-500 block mt-1 text-center">
+                  Elige un nombre de usuario único. Solo letras, números y @/./+/-/_<br>
+                </small>
+              {% elif field.name == "email" %}
+                <small class="text-xs text-gray-500 block mt-1 text-center">
+                  Ingresa un correo electrónico válido.<br>
+                </small>
+              {% else %}
+                <small class="text-xs text-gray-500 block mt-1 text-center">{{ field.help_text|safe|linebreaksbr|default_if_none:"" }}</small>
+              {% endif %}
+            {% endif %}
+            {% for error in field.errors %}
+              <span class="text-xs text-red-600 block mt-1 text-center">{{ error|escape }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition">Registrarse</button>
+      </form>
+      <style>
+        input[type="text"], input[type="password"], input[type="email"] {
+          border: 2px solid #b91c1c;
+          border-radius: 0.5rem;
+          padding: 0.5rem 1rem;
+          width: 100%;
+          text-align: center;
+        }
+        label {
+          text-align: center;
+          width: 100%;
+        }
+      </style>
+    <a href="{% url 'home' %}" class="mt-6 inline-block text-red-900 hover:underline">Volver al comercio</a>
+  </div>
+</body>
+</html>
