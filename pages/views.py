@@ -12,13 +12,22 @@ from django.db.models import Q
 
 
 def cart_view(request):
+    if not request.user.is_authenticated:
+        # Si el usuario NO está autenticado, mostramos el carrito vacío
+        return render(request, 'pages/cart.html', {
+            'cart_items': [],
+            'total': 0,
+        })
+
+    # Si está autenticado, obtenemos o creamos el carrito
     cart, created = Cart.objects.get_or_create(user=request.user)
     items = cart.cartitem_set.all()
-    total = sum(item.get_total() for item in items)  # 👈 calcular total
+    total = sum(item.get_total() for item in items)
+
     return render(request, 'pages/cart.html', {
+        'cart_items': items,
         'cart': cart,
-        'cart_items': items,  # 👈 ahora el template recibe cart_items
-        'total': total,       # 👈 y también total
+        'total': total,
     })
 
 @login_required(login_url='/login/')
