@@ -19,6 +19,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = "home"   # después de login o registro, redirige a 'home'
 LOGOUT_REDIRECT_URL = "home"  # después de logout también a 'home'
+# Stripe Keys
+STRIPE_SECRET_KEY = "eafit123"
+STRIPE_PUBLISHABLE_KEY = "eafit"
 
 # Solo si quieres archivos estáticos globales
 # STATICFILES_DIRS = [BASE_DIR / "static"]

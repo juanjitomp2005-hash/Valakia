@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponse # new
 from django.views.generic import TemplateView
 from django.views import View
@@ -6,7 +5,84 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import Product
+from .models import Product, CartItem, Cart
+from django.shortcuts import get_object_or_404
+import stripe
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+def success_view(request):
+    return render(request, "pages/success.html")
+
+def cancel_view(request):
+    return render(request, "pages/cancel.html")
+
+def checkout_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    # Obtener el carrito del usuario
+    cart = Cart.objects.get(user=request.user)
+    cart_items = cart.cartitem_set.all()
+    total = sum(item.get_total() for item in cart_items)
+
+    # Crear sesión de pago en Stripe
+    session = stripe.checkout.Session.create(
+        payment_method_types=["card"],
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": item.product.name,
+                    },
+                    "unit_amount": int(item.product.price * 100),  # en centavos
+                },
+                "quantity": item.quantity,
+            }
+            for item in cart_items
+        ],
+        mode="payment",
+        success_url="http://127.0.0.1:8000/success/",
+        cancel_url="http://127.0.0.1:8000/cancel/",
+    )
+
+    return redirect(session.url, code=303)
+
+def cart_view(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    items = cart.cartitem_set.all()
+    total = sum(item.get_total() for item in items)  # 👈 calcular total
+    return render(request, 'pages/cart.html', {
+        'cart': cart,
+        'cart_items': items,  # 👈 ahora el template recibe cart_items
+        'total': total,       # 👈 y también total
+    })
+
+@login_required(login_url='/login/')
+def add_to_cart(request, product_id):
+    if request.method != "POST":
+        return redirect('products')
+
+    print("Entrando a add_to_cart con product_id:", product_id)  # 👈 debug
+
+    product = get_object_or_404(Product, pk=product_id)
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+
+    return redirect('cart')
+
+@login_required
+def remove_from_cart(request, product_id):
+    cart = get_object_or_404(Cart, user=request.user)
+    product = get_object_or_404(Product, id=product_id)
+    cart_item = CartItem.objects.filter(cart=cart, product=product).first()
+    if cart_item:
+        cart_item.delete()
+    return redirect("cart")
 
 def profile(request):
     return render(request, "pages/profile.html", {"user": request.user})
@@ -38,15 +114,28 @@ class AboutPageView(TemplateView):
         return context
 
 
+from django.db.models import Q  # 👈 para búsquedas con OR
+
 class ProductIndexView(View):
     template_name = 'pages/products/index.html'
  
     def get(self, request):
-        viewData = {}
-        viewData["title"] = "Products - Online Store"
-        viewData["subtitle"] = "List of products"
-        viewData["products"] = Product.objects.all()  # ✅ ahora viene de la BD
+        query = request.GET.get("q")  # obtiene lo que se busca
+        if query:
+            products = Product.objects.filter(
+                Q(name__icontains=query) | Q(description__icontains=query)
+            )
+        else:
+            products = Product.objects.all()
+
+        viewData = {
+            "title": "Products - Online Store",
+            "subtitle": "List of products",
+            "products": products,
+            "query": query,  # 👈 lo mandamos al template para no perder el texto buscado
+        }
         return render(request, self.template_name, viewData)
+
 
 
 class ProductShowView(View):

@@ -9,7 +9,6 @@ venv/
 .env/
 
 
-
 # Archivos de Django
 staticfiles/
 media/

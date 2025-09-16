@@ -1,25 +1,38 @@
 {% extends 'pages/base.html' %}
-{% load static %}   <!-- 👈 necesario para usar 'static' -->
+{% load static %}
 
-{% block title %} {{title}} {% endblock %}
-{% block header_title %} {{subtitle}} {% endblock %}
+{% block title %} {{ title }} {% endblock %}
+{% block header_title %} {{ subtitle }} {% endblock %}
+
 {% block content %}
 <div class="row">
- {% for product in products %}
- <div class="col-md-4 col-lg-3 mb-2">
-   <div class="card">
+  {% for product in products %}
+  <div class="col-md-4 col-lg-3 mb-4">
+    <div class="card h-100 shadow-sm">
 
-{% if product.image %}
-  <img src="{{ product.image.url }}" class="card-img-top img-card">
-{% else %}
-  <img src="{% static 'img/no-image.png' %}" class="card-img-top img-card">
-{% endif %}
+      {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top img-card" alt="{{ product.name }}">
+      {% else %}
+        <img src="{% static 'img/no-image.png' %}" class="card-img-top img-card" alt="No image">
+      {% endif %}
 
-     <div class="card-body text-center">
-       <a href="{% url 'show' id=product.id %}" class="btn bg-primary text-white">{{product.name}}</a>
-     </div>
-   </div>
- </div>
- {% endfor %}
+      <div class="card-body text-center">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text text-muted">{{ product.price }} USD</p>
+
+        <!-- Botón para ver el producto -->
+        <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
+
+        <!-- Botón para añadir al carrito -->
+        <form action="{% url 'add_to_cart' product.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success btn-sm">Añadir al carrito</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+    <p class="text-center">No hay productos disponibles.</p>
+  {% endfor %}
 </div>
 {% endblock %}
