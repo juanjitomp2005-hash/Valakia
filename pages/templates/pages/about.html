@@ -2,14 +2,59 @@
 {% block title %} {{title}} {% endblock %}
 {% block header_title %} {{subtitle}} {% endblock %}
 {% block content %}
-<div class="container">
- <div class="row">
- <div class="col-lg-4 ms-auto">
- <p class="lead">{{description}}</p>
- </div>
- <div class="col-lg-4 me-auto">
- <p class="lead">{{author}}</p>
- </div>
- </div>
+<div class="container my-5 space-y-10">
+	<!-- Sobre nuestra tienda -->
+		<section class="bg-white rounded-xl shadow p-6 mb-8">
+			<h2 class="text-2xl font-bold mb-4 text-red-900">Sobre nuestra tienda</h2>
+			<div class="flex flex-col md:flex-row items-center gap-6">
+				<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Tienda de tecnología" class="rounded-lg object-cover w-full md:w-1/2 max-h-72">
+				<p class="text-gray-700 text-lg flex-1">
+					En Valakia, somos una tienda especializada en la venta de computadores y electrodomésticos de última generación. Desde nuestros inicios, nos hemos comprometido a ofrecer productos de alta calidad, tecnología de punta y un servicio al cliente excepcional. Nuestra pasión es ayudarte a encontrar el equipo perfecto para tu hogar o negocio, siempre con la mejor asesoría y garantía.
+				</p>
+			</div>
+		</section>
+
+	<!-- Fundadores -->
+		<section class="bg-white rounded-xl shadow p-6 mb-8">
+			<h2 class="text-2xl font-bold mb-4 text-red-900">Fundadores</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<div class="flex items-center space-x-4">
+					<img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Fundador 1" class="w-20 h-20 rounded-full">
+					<div>
+						<h3 class="font-semibold text-lg">Juan Jiménez</h3>
+						<p class="text-gray-600">Ingeniero de sistemas y apasionado por la tecnología. Juan lidera la visión tecnológica de Valakia, asegurando que siempre ofrezcamos lo mejor en computadores y dispositivos electrónicos.</p>
+					</div>
+				</div>
+				<div class="flex items-center space-x-4">
+					<img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Fundadora 2" class="w-20 h-20 rounded-full">
+					<div>
+						<h3 class="font-semibold text-lg">María González</h3>
+						<p class="text-gray-600">Especialista en ventas y atención al cliente. María se encarga de que cada cliente viva una experiencia única y encuentre el producto ideal para sus necesidades.</p>
+					</div>
+				</div>
+				<div class="flex items-center space-x-4">
+					<img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Fundador 3" class="w-20 h-20 rounded-full">
+					<div>
+						<h3 class="font-semibold text-lg">Carlos Ramírez</h3>
+						<p class="text-gray-600">Experto en logística y operaciones. Carlos garantiza que cada producto llegue a tiempo y en perfectas condiciones a nuestros clientes.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	<!-- Visión y Misión -->
+	<section class="bg-white rounded-xl shadow p-6">
+		<h2 class="text-2xl font-bold mb-4 text-red-900">Visión y Misión</h2>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div>
+				<h3 class="font-semibold text-lg mb-2">Visión</h3>
+				<p class="text-gray-700">Ser la tienda líder en tecnología y electrodomésticos en la región, reconocida por la innovación, calidad y confianza que brindamos a nuestros clientes.</p>
+			</div>
+			<div>
+				<h3 class="font-semibold text-lg mb-2">Misión</h3>
+				<p class="text-gray-700">Ofrecer computadores y electrodomésticos de alta calidad, con un servicio personalizado y soluciones tecnológicas que mejoren la vida de nuestros clientes.</p>
+			</div>
+		</div>
+	</section>
 </div>
 {% endblock %}
