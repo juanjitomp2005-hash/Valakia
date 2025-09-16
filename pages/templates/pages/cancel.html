@@ -1,0 +1,11 @@
+{% extends "pages/base.html" %}
+
+{% block title %}Pago Cancelado{% endblock %}
+
+{% block content %}
+<div class="text-center my-5">
+    <h2 class="text-danger">❌ Pago cancelado</h2>
+    <p>Parece que cancelaste el proceso de pago. Puedes intentar nuevamente cuando quieras.</p>
+    <a href="{% url 'cart' %}" class="btn btn-warning mt-3">Volver al Carrito</a>
+</div>
+{% endblock %}
