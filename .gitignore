@@ -11,7 +11,7 @@ venv/
 
 # Archivos de Django
 staticfiles/
-media/
+
 
 # Archivos de IDEs
 .vscode/
