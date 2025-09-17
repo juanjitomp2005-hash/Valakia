@@ -39,6 +39,8 @@ crossorigin="anonymous" />
           {% if user.is_authenticated %}
             <form action="{% url 'logout' %}" method="post" class="flex items-center">
               {% csrf_token %}
+              <a href="{% url 'cart' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Carrito</a>
+              <span class="h-6 w-px bg-gray-200"></span>
               <button type="submit" class="text-gray-900 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">Cerrar sesión</button>
             </form>
           {% else %}
@@ -69,6 +71,8 @@ crossorigin="anonymous" />
           {% if user.is_authenticated %}
             <form action="{% url 'logout' %}" method="post">
               {% csrf_token %}
+              <a href="{% url 'cart' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Carrito</a>
+              <span class="h-6 w-px bg-gray-200"></span>
               <button type="submit" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Cerrar sesión</button>
             </form>
           {% else %}
