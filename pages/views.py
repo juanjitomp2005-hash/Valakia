@@ -1,3 +1,4 @@
+#Juan Jose Montoya
 from django.http import HttpResponse # new
 from django.views.generic import TemplateView
 from django.views import View
@@ -7,56 +8,27 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Product, CartItem, Cart
 from django.shortcuts import get_object_or_404
-import stripe
 from django.conf import settings
+from django.db.models import Q
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
-def success_view(request):
-    return render(request, "pages/success.html")
-
-def cancel_view(request):
-    return render(request, "pages/cancel.html")
-
-def checkout_view(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-
-    # Obtener el carrito del usuario
-    cart = Cart.objects.get(user=request.user)
-    cart_items = cart.cartitem_set.all()
-    total = sum(item.get_total() for item in cart_items)
-
-    # Crear sesión de pago en Stripe
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[
-            {
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {
-                        "name": item.product.name,
-                    },
-                    "unit_amount": int(item.product.price * 100),  # en centavos
-                },
-                "quantity": item.quantity,
-            }
-            for item in cart_items
-        ],
-        mode="payment",
-        success_url="http://127.0.0.1:8000/success/",
-        cancel_url="http://127.0.0.1:8000/cancel/",
-    )
-
-    return redirect(session.url, code=303)
 
 def cart_view(request):
+    if not request.user.is_authenticated:
+        # Si el usuario NO está autenticado, mostramos el carrito vacío
+        return render(request, 'pages/cart.html', {
+            'cart_items': [],
+            'total': 0,
+        })
+
+    # Si está autenticado, obtenemos o creamos el carrito
     cart, created = Cart.objects.get_or_create(user=request.user)
     items = cart.cartitem_set.all()
-    total = sum(item.get_total() for item in items)  # 👈 calcular total
+    total = sum(item.get_total() for item in items)
+
     return render(request, 'pages/cart.html', {
+        'cart_items': items,
         'cart': cart,
-        'cart_items': items,  # 👈 ahora el template recibe cart_items
-        'total': total,       # 👈 y también total
+        'total': total,
     })
 
 from django.http import JsonResponse
@@ -144,7 +116,11 @@ class ProductIndexView(View):
         order = request.GET.get("order")
         products = Product.objects.all()
         if query:
+<<<<<<< HEAD
             products = products.filter(
+=======
+            products = Product.objects.filter(
+>>>>>>> feature
                 Q(name__icontains=query)
             )
         if order == "price_asc":
@@ -163,8 +139,12 @@ class ProductIndexView(View):
             "title": "Products - Online Store",
             "subtitle": "List of products",
             "products": products,
+<<<<<<< HEAD
             "query": query,
             "cart_count": cart_count,
+=======
+            "query": query,  # para que el input no pierda el texto buscado
+>>>>>>> feature
         }
         return render(request, self.template_name, viewData)
 

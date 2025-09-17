@@ -5,6 +5,7 @@
 {% block header_title %} {{ subtitle }} {% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
 <form method="get" class="mb-4 d-flex flex-wrap align-items-center gap-2">
   <input type="text" name="q" class="form-control w-auto" placeholder="Buscar por nombre..." value="{{ query|default:'' }}">
   <select name="order" class="form-select w-auto">
@@ -29,12 +30,44 @@
   <p class="card-text text-muted">{{ product.price }} COP</p>
         <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
         <button type="button" class="btn btn-success btn-sm add-to-cart-btn" data-product-id="{{ product.id }}" data-csrf-token="{{ csrf_token }}">Añadir al carrito</button>
+=======
+<div class="container mt-4">
+
+  <!-- Barra de búsqueda -->
+  <form method="get" action="{% url 'products' %}" class="mb-4 d-flex">
+    <input type="text" name="q" value="{{ query }}" placeholder="Buscar productos..."
+           class="form-control me-2">
+    <button type="submit" class="btn btn-outline-primary">Buscar</button>
+  </form>
+
+  <div class="row">
+    {% for product in products %}
+    <div class="col-md-4 col-lg-3 mb-4">
+      <div class="card h-100 shadow-sm">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top img-card" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'img/no-image.png' %}" class="card-img-top img-card" alt="No image">
+        {% endif %}
+
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text text-muted">{{ product.price }} COP</p>
+
+          <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
+
+          <form action="{% url 'add_to_cart' product.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-sm">Añadir al carrito</button>
+          </form>
+        </div>
+>>>>>>> feature
       </div>
     </div>
+    {% empty %}
+      <p class="text-center">No hay productos disponibles.</p>
+    {% endfor %}
   </div>
-  {% empty %}
-    <p class="text-center">No hay productos disponibles.</p>
-  {% endfor %}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
