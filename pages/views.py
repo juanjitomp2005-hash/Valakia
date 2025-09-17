@@ -9,72 +9,35 @@ from .models import Product, CartItem, Cart
 from django.shortcuts import get_object_or_404
 import stripe
 from django.conf import settings
+from django.urls import reverse
+from django.http import JsonResponse
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
-def success_view(request):
-    return render(request, "pages/success.html")
-
-def cancel_view(request):
-    return render(request, "pages/cancel.html")
-
-def checkout_view(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-
-    # Obtener el carrito del usuario
-    cart = Cart.objects.get(user=request.user)
-    cart_items = cart.cartitem_set.all()
-    total = sum(item.get_total() for item in cart_items)
-
-    # Crear sesión de pago en Stripe
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[
-            {
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {
-                        "name": item.product.name,
-                    },
-                    "unit_amount": int(item.product.price * 100),  # en centavos
-                },
-                "quantity": item.quantity,
-            }
-            for item in cart_items
-        ],
-        mode="payment",
-        success_url="http://127.0.0.1:8000/success/",
-        cancel_url="http://127.0.0.1:8000/cancel/",
-    )
-
-    return redirect(session.url, code=303)
-
+@login_required(login_url='/login/')
 def cart_view(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     items = cart.cartitem_set.all()
-    total = sum(item.get_total() for item in items)  # 👈 calcular total
+    total = sum(item.get_total() for item in items)
     return render(request, 'pages/cart.html', {
-        'cart': cart,
-        'cart_items': items,  # 👈 ahora el template recibe cart_items
-        'total': total,       # 👈 y también total
+        'cart_items': items,
+        'total': total
     })
 
-from django.http import JsonResponse
 @login_required(login_url='/login/')
 def add_to_cart(request, product_id):
-    if request.method != "POST":
-        return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+    if request.method == "POST":
+        product = get_object_or_404(Product, id=product_id)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+        
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            total_items = sum(item.quantity for item in cart.cartitem_set.all())
+            return JsonResponse({"success": True, "cart_count": total_items})
 
-    product = get_object_or_404(Product, pk=product_id)
-    cart, _ = Cart.objects.get_or_create(user=request.user)
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
-
-    # Contar total de productos en el carrito
-    total_items = sum(item.quantity for item in cart.cartitem_set.all())
-    return JsonResponse({'success': True, 'cart_count': total_items})
+        return redirect("cart")
+    return redirect("index")
 
 @login_required
 def remove_from_cart(request, product_id):

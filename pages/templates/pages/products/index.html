@@ -12,30 +12,48 @@
     <option value="price_asc" {% if request.GET.order == 'price_asc' %}selected{% endif %}>Menor precio</option>
     <option value="price_desc" {% if request.GET.order == 'price_desc' %}selected{% endif %}>Mayor precio</option>
   </select>
-  <button type="submit" class=" bg-red-900 text-white py-2 px-4 rounded">Filtrar</button>
+  <button type="submit" class="bg-red-900 text-white py-2 px-4 rounded">Filtrar</button>
 </form>
 
 <div class="row">
   {% for product in products %}
-  <div class="col-md-4 col-lg-3 mb-4">
-    <div class="card h-100 shadow-sm">
-      {% if product.image %}
-        <img src="{{ product.image.url }}" class="card-img-top img-card" alt="{{ product.name }}">
-      {% else %}
-        <img src="{% static 'img/no-image.png' %}" class="card-img-top img-card" alt="No image">
-      {% endif %}
-      <div class="card-body text-center">
-        <h5 class="card-title">{{ product.name }}</h5>
-  <p class="card-text text-muted">{{ product.price }} COP</p>
-        <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
-        <button type="button" class="btn btn-success btn-sm add-to-cart-btn" data-product-id="{{ product.id }}" data-csrf-token="{{ csrf_token }}">Añadir al carrito</button>
+    <div class="col-md-4 col-lg-3 mb-4">
+      <div class="card h-100 shadow-sm">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top img-card" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'img/no-image.png' %}" class="card-img-top img-card" alt="No image">
+        {% endif %}
+
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text text-muted">{{ product.price }} COP</p>
+          <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
+
+          {% if user.is_authenticated %}
+            <!-- Si el usuario está logueado -->
+            <button type="button" 
+                    class="btn btn-success btn-sm add-to-cart-btn" 
+                    data-product-id="{{ product.id }}" 
+                    data-csrf-token="{{ csrf_token }}">
+              Añadir al carrito
+            </button>
+          {% else %}
+            <!-- Si el usuario NO está logueado -->
+            <a href="{% url 'login' %}?next={% url 'products' %}" 
+               class="btn btn-warning btn-sm">
+              Inicia sesión para comprar
+            </a>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
   {% empty %}
     <p class="text-center">No hay productos disponibles.</p>
   {% endfor %}
 </div>
+
+<!-- 🎉 Script para añadir productos al carrito -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -63,8 +81,11 @@
               el.textContent = data.cart_count;
               el.style.display = data.cart_count > 0 ? '' : 'none';
             });
+          } else {
+            alert("Ocurrió un error al añadir el producto.");
           }
-        });
+        })
+        .catch(err => console.error(err));
       });
     });
   });
