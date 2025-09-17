@@ -1,4 +1,5 @@
 {% extends 'pages/base.html' %}
+{% load static %}
 {% block title %}'Home Page - Online Store'{% endblock %}
 {% block content %}
 <div class="container my-4 d-flex justify-content-center">
@@ -31,11 +32,17 @@
   <div class="mb-8">
     <h2 class="text-2xl font-bold mb-4">Productos más vendidos</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-      {% comment %} Reemplaza esta lista por una lista de productos en Python {% endcomment %}
+      
       {% for producto in productos_mas_vendidos %}
       <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-        <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="w-32 h-32 object-cover rounded-lg mb-2">
-        <span class="font-semibold text-lg text-gray-800">{{ producto.nombre }}</span>
+        <a href="{% url 'show' id=producto.id %}">
+          {% if producto.image %}
+            <img src="{{ producto.image.url }}" alt="{{ producto.name }}" class="w-32 h-32 object-cover rounded-lg mb-2 hover:scale-105 transition">
+          {% else %}
+            <img src="{% static 'img/no-image.png' %}" alt="Sin imagen" class="w-32 h-32 object-cover rounded-lg mb-2 hover:scale-105 transition">
+          {% endif %}
+        </a>
+        <span class="font-semibold text-lg text-gray-800">{{ producto.name }}</span>
       </div>
       {% empty %}
       <!-- Ejemplo estático si la lista está vacía -->

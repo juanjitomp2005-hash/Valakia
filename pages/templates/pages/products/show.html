@@ -3,23 +3,29 @@
 {% block title %} {{title}} {% endblock %}
 {% block header_title %} {{subtitle}} {% endblock %}
 {% block content %}
-<div class="card mb-3">
- <div class="row g-0">
- <div class="col-md-4">
-{% if product.image %}
-  <img src="{{ product.image.url }}" class="img-fluid rounded-start">
-{% else %}
-  <img src="{% static 'pages/img/air.webp' %}" class="img-fluid rounded-start">
-{% endif %}
- </div>
- <div class="col-md-8">
- <div class="card-body">
- <h5 class="card-title">
- {{product.name}}
- </h5>
- <p class="card-text">{{product.description}}</p>
- </div>
- </div>
- </div>
+<div class="container my-5 d-flex justify-content-center">
+  <div class="card shadow-lg p-4" style="max-width: 700px; width: 100%; border-radius: 1.5rem;">
+    <div class="row g-0 align-items-center">
+      <div class="col-md-5 text-center">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="img-fluid rounded mb-3" style="max-height: 260px; object-fit: contain;">
+        {% else %}
+          <img src="{% static 'pages/img/air.webp' %}" class="img-fluid rounded mb-3" style="max-height: 260px; object-fit: contain;">
+        {% endif %}
+      </div>
+      <div class="col-md-7">
+        <div class="card-body">
+          <h2 class="card-title mb-3 fw-bold text-red-900" style="font-size:2rem;">{{ product.name }}</h2>
+          <p class="text-muted mb-2" style="font-size:1.1rem;">{{ product.descripcion }}</p>
+          <p class="mb-2"><span class="badge bg-secondary">Vendidos: {{ product.cantidad_vendidos }}</span></p>
+          <p class="h4 mb-4 text-success">${{ product.price }} COP</p>
+          <form action="{% url 'add_to_cart' product.id %}" method="post" class="d-grid gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-lg">Añadir al carrito</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -99,6 +99,12 @@ def register(request):
 
 class HomePageView(TemplateView):
  template_name = 'pages/home.html'
+
+ def get_context_data(self, **kwargs):
+     context = super().get_context_data(**kwargs)
+     productos_mas_vendidos = Product.objects.order_by('-cantidad_vendidos')[:4]
+     context['productos_mas_vendidos'] = productos_mas_vendidos
+     return context
  
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
@@ -120,19 +126,23 @@ class ProductIndexView(View):
     template_name = 'pages/products/index.html'
  
     def get(self, request):
-        query = request.GET.get("q")  # obtiene lo que se busca
+        query = request.GET.get("q")
+        order = request.GET.get("order")
+        products = Product.objects.all()
         if query:
-            products = Product.objects.filter(
-                Q(name__icontains=query) | Q(description__icontains=query)
+            products = products.filter(
+                Q(name__icontains=query)
             )
-        else:
-            products = Product.objects.all()
+        if order == "price_asc":
+            products = products.order_by("price")
+        elif order == "price_desc":
+            products = products.order_by("-price")
 
         viewData = {
             "title": "Products - Online Store",
             "subtitle": "List of products",
             "products": products,
-            "query": query,  # 👈 lo mandamos al template para no perder el texto buscado
+            "query": query,
         }
         return render(request, self.template_name, viewData)
 
