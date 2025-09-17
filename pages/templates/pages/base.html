@@ -42,6 +42,8 @@ crossorigin="anonymous" />
               <button type="submit" class="text-gray-900 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">Cerrar sesión</button>
             </form>
           {% else %}
+           <a href="{% url 'cart' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Carrito</a>
+           <span class="h-6 w-px bg-gray-200"></span>
             <a href="{% url 'login' %}" class="text-gray-900 hover:text-red-900 px-3 py-2 rounded-md text-sm font-medium">Login</a>
             <span class="h-6 w-px bg-gray-200"></span>
             <a href="{% url 'register' %}" class="text-gray-900 hover:text-red-900 px-3 py-2 rounded-md text-sm font-medium">Register</a>
@@ -70,6 +72,7 @@ crossorigin="anonymous" />
               <button type="submit" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Cerrar sesión</button>
             </form>
           {% else %}
+            <a href="{% url 'cart' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Carrito</a>
             <a href="{% url 'login' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Login</a>
             <a href="{% url 'register' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-red-900">Register</a>
           {% endif %}
