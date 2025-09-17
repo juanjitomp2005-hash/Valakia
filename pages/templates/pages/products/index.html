@@ -28,10 +28,7 @@
         <h5 class="card-title">{{ product.name }}</h5>
   <p class="card-text text-muted">{{ product.price }} COP</p>
         <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
-        <form action="{% url 'add_to_cart' product.id %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-success btn-sm">Añadir al carrito</button>
-        </form>
+        <button type="button" class="btn btn-success btn-sm add-to-cart-btn" data-product-id="{{ product.id }}" data-csrf-token="{{ csrf_token }}">Añadir al carrito</button>
       </div>
     </div>
   </div>
@@ -39,4 +36,37 @@
     <p class="text-center">No hay productos disponibles.</p>
   {% endfor %}
 </div>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.add-to-cart-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        const productId = btn.getAttribute('data-product-id');
+        const csrfToken = btn.getAttribute('data-csrf-token');
+        fetch(`/cart/add/${productId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.7 }
+            });
+            // Actualizar contador carrito
+            document.querySelectorAll('.cart-count-badge').forEach(function(el){
+              el.textContent = data.cart_count;
+              el.style.display = data.cart_count > 0 ? '' : 'none';
+            });
+          }
+        });
+      });
+    });
+  });
+</script>
 {% endblock %}

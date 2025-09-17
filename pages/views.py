@@ -59,12 +59,11 @@ def cart_view(request):
         'total': total,       # 👈 y también total
     })
 
+from django.http import JsonResponse
 @login_required(login_url='/login/')
 def add_to_cart(request, product_id):
     if request.method != "POST":
-        return redirect('products')
-
-    print("Entrando a add_to_cart con product_id:", product_id)  # 👈 debug
+        return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
     product = get_object_or_404(Product, pk=product_id)
     cart, _ = Cart.objects.get_or_create(user=request.user)
@@ -73,7 +72,9 @@ def add_to_cart(request, product_id):
         cart_item.quantity += 1
         cart_item.save()
 
-    return redirect('cart')
+    # Contar total de productos en el carrito
+    total_items = sum(item.quantity for item in cart.cartitem_set.all())
+    return JsonResponse({'success': True, 'cart_count': total_items})
 
 @login_required
 def remove_from_cart(request, product_id):
@@ -98,13 +99,26 @@ def register(request):
     return render(request, "pages/register.html", {"form": form})
 
 class HomePageView(TemplateView):
- template_name = 'pages/home.html'
+    template_name = 'pages/home.html'
 
- def get_context_data(self, **kwargs):
-     context = super().get_context_data(**kwargs)
-     productos_mas_vendidos = Product.objects.order_by('-cantidad_vendidos')[:4]
-     context['productos_mas_vendidos'] = productos_mas_vendidos
-     return context
+    def get_context_data(self, **kwargs):
+        import random
+        context = super().get_context_data(**kwargs)
+        productos_mas_vendidos = Product.objects.order_by('-cantidad_vendidos')[:4]
+        context['productos_mas_vendidos'] = productos_mas_vendidos
+        producto_dia = Product.objects.filter(es_producto_dia=True).first()
+        if producto_dia:
+            context['producto_aleatorio'] = producto_dia
+        else:
+            productos = list(Product.objects.all())
+            context['producto_aleatorio'] = random.choice(productos) if productos else None
+        # Contar productos en carrito si autenticado
+        if self.request.user.is_authenticated:
+            cart, _ = Cart.objects.get_or_create(user=self.request.user)
+            context['cart_count'] = sum(item.quantity for item in cart.cartitem_set.all())
+        else:
+            context['cart_count'] = 0
+        return context
  
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
@@ -138,11 +152,19 @@ class ProductIndexView(View):
         elif order == "price_desc":
             products = products.order_by("-price")
 
+        # Contar productos en carrito si autenticado
+        if request.user.is_authenticated:
+            cart, _ = Cart.objects.get_or_create(user=request.user)
+            cart_count = sum(item.quantity for item in cart.cartitem_set.all())
+        else:
+            cart_count = 0
+
         viewData = {
             "title": "Products - Online Store",
             "subtitle": "List of products",
             "products": products,
             "query": query,
+            "cart_count": cart_count,
         }
         return render(request, self.template_name, viewData)
 
@@ -157,6 +179,13 @@ class ProductShowView(View):
         viewData["title"] = product.name + " - Online Store"
         viewData["subtitle"] = product.name + " - Product information"
         viewData["product"] = product
+        # Contar productos en carrito si autenticado
+        if request.user.is_authenticated:
+            cart, _ = Cart.objects.get_or_create(user=request.user)
+            cart_count = sum(item.quantity for item in cart.cartitem_set.all())
+        else:
+            cart_count = 0
+        viewData["cart_count"] = cart_count
         return render(request, self.template_name, viewData)
 
 class ProductForm(forms.Form):
