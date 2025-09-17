@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -22,16 +21,3 @@
   </div>
 </body>
 </html>
-=======
-{% extends 'pages/base.html' %}
-{% block content %}
-<div class="container mt-5">
-  <h2>Iniciar sesión</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Entrar</button>
-  </form>
-</div>
-{% endblock %}
->>>>>>> feature
