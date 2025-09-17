@@ -15,23 +15,24 @@
   <button type="submit" class="bg-red-900 text-white py-2 px-4 rounded">Filtrar</button>
 </form>
 
-<div class="row">
+<div class="row g-3">
   {% for product in products %}
-    <div class="col-md-4 col-lg-3 mb-4">
-      <div class="card h-100 shadow-sm">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+      <div class="card h-100 w-100 shadow-sm flex-grow-1 flex-column d-flex">
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="card-img-top img-card" alt="{{ product.name }}">
+          <div class="w-100 d-flex justify-content-center align-items-center" style="height: 180px;">
+            <img src="{{ product.image.url }}" class="img-fluid rounded mx-auto d-block" alt="{{ product.name }}" style="max-height: 160px; object-fit: contain; width: auto; max-width: 100%;">
+          </div>
         {% else %}
-          <img src="{% static 'img/no-image.png' %}" class="card-img-top img-card" alt="No image">
+          <div class="w-100 d-flex justify-content-center align-items-center" style="height: 180px;">
+            <img src="{% static 'img/no-image.png' %}" class="img-fluid rounded mx-auto d-block" alt="No image" style="max-height: 160px; object-fit: contain; width: auto; max-width: 100%;">
+          </div>
         {% endif %}
-
-        <div class="card-body text-center">
+        <div class="card-body text-center d-flex flex-column flex-grow-1">
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text text-muted">{{ product.price }} COP</p>
           <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
-
           {% if user.is_authenticated %}
-            <!-- Si el usuario está logueado -->
             <button type="button" 
                     class="btn btn-success btn-sm add-to-cart-btn" 
                     data-product-id="{{ product.id }}" 
@@ -39,7 +40,6 @@
               Añadir al carrito
             </button>
           {% else %}
-            <!-- Si el usuario NO está logueado -->
             <a href="{% url 'login' %}?next={% url 'products' %}" 
                class="btn btn-warning btn-sm">
               Inicia sesión para comprar
