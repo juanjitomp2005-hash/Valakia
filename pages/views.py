@@ -3,11 +3,12 @@ from django.views.generic import TemplateView
 from django.views import View
 from django import forms
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Product, CartItem, Cart
 from django.shortcuts import get_object_or_404
-import stripe
 from django.conf import settings
 from django.urls import reverse
 from django.http import JsonResponse
@@ -34,10 +35,13 @@ def add_to_cart(request, product_id):
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             total_items = sum(item.quantity for item in cart.cartitem_set.all())
-            return JsonResponse({"success": True, "cart_count": total_items})
+            # Also return a message so AJAX frontend can show a notification
+            return JsonResponse({"success": True, "cart_count": total_items, "message": "Product added to cart."})
 
-        return redirect("cart")
-    return redirect("index")
+            # Add flash message for normal (non-AJAX) requests
+            messages.success(request, _("Product added to cart."))
+            return redirect("cart")
+        return redirect("index")
 
 @login_required
 def remove_from_cart(request, product_id):
@@ -46,6 +50,7 @@ def remove_from_cart(request, product_id):
     cart_item = CartItem.objects.filter(cart=cart, product=product).first()
     if cart_item:
         cart_item.delete()
+        messages.info(request, _("Product removed from cart."))
     return redirect("cart")
 
 def profile(request):
@@ -77,7 +82,7 @@ class HomePageView(TemplateView):
             context['producto_aleatorio'] = random.choice(productos) if productos else None
         # Contar productos en carrito si autenticado
         if self.request.user.is_authenticated:
-            cart, _ = Cart.objects.get_or_create(user=self.request.user)
+            cart, created = Cart.objects.get_or_create(user=self.request.user)
             context['cart_count'] = sum(item.quantity for item in cart.cartitem_set.all())
         else:
             context['cart_count'] = 0
@@ -89,10 +94,10 @@ class AboutPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "title": "About us - Online Store",
-            "subtitle": "About us",
-            "description": "This is an about page ...",
-            "author": "Developed by: Juan Jose Montoya",
+            "title": _("About us - Online Store"),
+            "subtitle": _("About us"),
+            "description": _("This is an about page ..."),
+            "author": _("Developed by: Juan Jose Montoya"),
         })
         return context
 
@@ -117,14 +122,14 @@ class ProductIndexView(View):
 
         # Contar productos en carrito si autenticado
         if request.user.is_authenticated:
-            cart, _ = Cart.objects.get_or_create(user=request.user)
+            cart, created = Cart.objects.get_or_create(user=request.user)
             cart_count = sum(item.quantity for item in cart.cartitem_set.all())
         else:
             cart_count = 0
 
         viewData = {
-            "title": "Products - Online Store",
-            "subtitle": "List of products",
+            "title": _("Products - Online Store"),
+            "subtitle": _("List of products"),
             "products": products,
             "query": query,
             "cart_count": cart_count,
@@ -144,7 +149,7 @@ class ProductShowView(View):
         viewData["product"] = product
         # Contar productos en carrito si autenticado
         if request.user.is_authenticated:
-            cart, _ = Cart.objects.get_or_create(user=request.user)
+            cart, created = Cart.objects.get_or_create(user=request.user)
             cart_count = sum(item.quantity for item in cart.cartitem_set.all())
         else:
             cart_count = 0
