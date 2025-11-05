@@ -1,11 +1,12 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 
-{% block title %}Pago Cancelado{% endblock %}
+{% block title %}{% trans "Payment cancelled" %}{% endblock %}
 
 {% block content %}
 <div class="text-center my-5">
-    <h2 class="text-danger">❌ Pago cancelado</h2>
-    <p>Parece que cancelaste el proceso de pago. Puedes intentar nuevamente cuando quieras.</p>
-    <a href="{% url 'cart' %}" class="btn btn-warning mt-3">Volver al Carrito</a>
+    <h2 class="text-danger">❌ {% trans "Payment cancelled" %}</h2>
+    <p>{% trans "It looks like you cancelled the payment process. Feel free to try again whenever you are ready." %}</p>
+    <a href="{% url 'cart' %}" class="btn btn-warning mt-3">{% trans "Return to cart" %}</a>
 </div>
 {% endblock %}

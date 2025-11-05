@@ -1,58 +1,56 @@
 {% extends 'pages/base.html' %}
-{% block title %} {{title}} {% endblock %}
-{% block header_title %} {{subtitle}} {% endblock %}
+{% load i18n %}
+{% block title %} {{ title }} {% endblock %}
+{% block header_title %} {{ subtitle }} {% endblock %}
 {% block content %}
 <div class="container my-5 space-y-10">
-	<!-- Sobre nuestra tienda -->
-		<section class="bg-white rounded-xl shadow p-6 mb-8">
-			<h2 class="text-2xl font-bold mb-4 text-red-900">Sobre nuestra tienda</h2>
-			<div class="flex flex-col md:flex-row items-center gap-6">
-				<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Tienda de tecnología" class="rounded-lg object-cover w-full md:w-1/2 max-h-72">
-				<p class="text-gray-700 text-lg flex-1">
-					En Valakia, somos una tienda especializada en la venta de computadores y electrodomésticos de última generación. Desde nuestros inicios, nos hemos comprometido a ofrecer productos de alta calidad, tecnología de punta y un servicio al cliente excepcional. Nuestra pasión es ayudarte a encontrar el equipo perfecto para tu hogar o negocio, siempre con la mejor asesoría y garantía.
-				</p>
-			</div>
-		</section>
+	<section class="bg-white rounded-xl shadow p-6 mb-8">
+		<h2 class="text-2xl font-bold mb-4 text-red-900">{% trans "About our store" %}</h2>
+		<div class="flex flex-col md:flex-row items-center gap-6">
+			<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="{% trans "Technology store" %}" class="rounded-lg object-cover w-full md:w-1/2 max-h-72">
+			<p class="text-gray-700 text-lg flex-1">
+				{% blocktrans %}At Valakia, we specialize in cutting-edge computers and home appliances. Since day one, we have committed to high-quality products, innovative technologies, and exceptional customer service. Our passion is helping you find the perfect equipment for your home or business, backed by expert guidance and reliable warranties.{% endblocktrans %}
+			</p>
+		</div>
+	</section>
 
-	<!-- Fundadores -->
-		<section class="bg-white rounded-xl shadow p-6 mb-8">
-			<h2 class="text-2xl font-bold mb-4 text-red-900">Fundadores</h2>
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-				<div class="flex items-center space-x-4">
-					<img src="../../../media/products/victor.jpeg" alt="Fundador 1" class="w-20 h-20 rounded-full">
-					<div>
-						<h3 class="font-semibold text-lg">Victor Chavez</h3>
-						<p class="text-gray-600">Ingeniero de sistemas y apasionado por la tecnología. Victor lidera la visión tecnológica de Valakia.</p>
-					</div>
-				</div>
-				<div class="flex items-center space-x-4">
-					<img src="../../../media/products/jose.jpeg" alt="Fundadora 2" class="w-20 h-20 rounded-full">
-					<div>
-						<h3 class="font-semibold text-lg">Juan Jose Montoya</h3>
-						<p class="text-gray-600">Especialista en ventas y atención al cliente. Juan Jose se encarga de que cada cliente viva una experiencia única y encuentre el producto ideal para sus necesidades.</p>
-					</div>
-				</div>
-				<div class="flex items-center space-x-4">
-					<img src="../../../media/products/mafla.jpeg" alt="Fundador 3" class="w-20 h-20 rounded-full">
-					<div>
-						<h3 class="font-semibold text-lg">Maflita</h3>
-						<p class="text-gray-600">que parche el mafla y sizas la mera energia</p>
-					</div>
+	<section class="bg-white rounded-xl shadow p-6 mb-8">
+		<h2 class="text-2xl font-bold mb-4 text-red-900">{% trans "Founders" %}</h2>
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<div class="flex items-center space-x-4">
+				<img src="../../../media/products/victor.jpeg" alt="{% trans "Founder Victor" %}" class="w-20 h-20 rounded-full">
+				<div>
+					<h3 class="font-semibold text-lg">Victor Chavez</h3>
+					<p class="text-gray-600">{% blocktrans %}Systems engineer and technology enthusiast. Victor leads Valakia's technical vision.{% endblocktrans %}</p>
 				</div>
 			</div>
-		</section>
+			<div class="flex items-center space-x-4">
+				<img src="../../../media/products/jose.jpeg" alt="{% trans "Founder Juan Jose" %}" class="w-20 h-20 rounded-full">
+				<div>
+					<h3 class="font-semibold text-lg">Juan Jose Montoya</h3>
+					<p class="text-gray-600">{% blocktrans %}Sales and customer care expert. Juan Jose ensures every visitor enjoys a tailored experience and finds the ideal product.{% endblocktrans %}</p>
+				</div>
+			</div>
+			<div class="flex items-center space-x-4">
+				<img src="../../../media/products/mafla.jpeg" alt="{% trans "Founder Maflita" %}" class="w-20 h-20 rounded-full">
+				<div>
+					<h3 class="font-semibold text-lg">Maflita</h3>
+					<p class="text-gray-600">{% blocktrans %}Our spirit of fun and energy, always bringing good vibes to the team.{% endblocktrans %}</p>
+				</div>
+			</div>
+		</div>
+	</section>
 
-	<!-- Visión y Misión -->
 	<section class="bg-white rounded-xl shadow p-6">
-		<h2 class="text-2xl font-bold mb-4 text-red-900">Visión y Misión</h2>
+		<h2 class="text-2xl font-bold mb-4 text-red-900">{% trans "Vision and Mission" %}</h2>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 			<div>
-				<h3 class="font-semibold text-lg mb-2">Visión</h3>
-				<p class="text-gray-700">Ser la tienda líder en tecnología y electrodomésticos en la región, reconocida por la innovación, calidad y confianza que brindamos a nuestros clientes.</p>
+				<h3 class="font-semibold text-lg mb-2">{% trans "Vision" %}</h3>
+				<p class="text-gray-700">{% blocktrans %}To be the leading technology and appliance store in the region, recognized for innovation, quality, and the trust we provide our customers.{% endblocktrans %}</p>
 			</div>
 			<div>
-				<h3 class="font-semibold text-lg mb-2">Misión</h3>
-				<p class="text-gray-700">Ofrecer computadores y electrodomésticos de alta calidad, con un servicio personalizado y soluciones tecnológicas que mejoren la vida de nuestros clientes.</p>
+				<h3 class="font-semibold text-lg mb-2">{% trans "Mission" %}</h3>
+				<p class="text-gray-700">{% blocktrans %}To deliver high-quality computers and appliances with personalized service and technological solutions that improve our customers' lives.{% endblocktrans %}</p>
 			</div>
 		</div>
 	</section>

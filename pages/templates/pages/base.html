@@ -1,7 +1,7 @@
 {% load static %}
 {% load i18n %}
 <!doctype html>
-<html lang="en">
+<html lang="{{ request.LANGUAGE_CODE|default:'en' }}">
 <head>
  <meta charset="utf-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,8 +39,8 @@ crossorigin="anonymous" />
           <form action="{% url 'set_language' %}" method="post" class="flex items-center">
             {% csrf_token %}
             <select name="language" onchange="this.form.submit()" class="form-select form-select-sm mr-3">
-              <option value="en">English</option>
-              <option value="es">Español</option>
+              <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+              <option value="es" {% if request.LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
             </select>
             <input type="hidden" name="next" value="{{ request.path }}" />
           </form>

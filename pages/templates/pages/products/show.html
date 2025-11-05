@@ -9,9 +9,9 @@
     <div class="row g-0 align-items-center">
       <div class="col-md-5 text-center">
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="img-fluid rounded mb-3" style="max-height: 260px; object-fit: contain;">
+          <img src="{{ product.image.url }}" class="img-fluid rounded mb-3" style="max-height: 260px; object-fit: contain;" alt="{{ product.name }}">
         {% else %}
-          <img src="{% static 'pages/img/air.webp' %}" class="img-fluid rounded mb-3" style="max-height: 260px; object-fit: contain;">
+          <img src="{% static 'pages/img/air.webp' %}" class="img-fluid rounded mb-3" style="max-height: 260px; object-fit: contain;" alt="{% trans 'Placeholder image' %}">
         {% endif %}
       </div>
       <div class="col-md-7">

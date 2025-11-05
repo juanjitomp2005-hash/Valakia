@@ -1,17 +1,17 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrarse</title>
+  <title>{% trans "Register" %}</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
   <div class="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
-    <img src="{% static 'pages/img/valakia.jpeg' %}" alt="Logo Valakia" class="w-20 h-20 rounded-full mb-4">
-    <h2 class="text-2xl font-bold mb-6 text-red-900">Crear cuenta</h2>
-    <!-- Solo un formulario, personalizado abajo -->
+    <img src="{% static 'pages/img/valakia.jpeg' %}" alt="Valakia logo" class="w-20 h-20 rounded-full mb-4">
+    <h2 class="text-2xl font-bold mb-6 text-red-900">{% trans "Create account" %}</h2>
       <form method="post" class="w-full flex flex-col items-center space-y-4">
         {% csrf_token %}
         {% for field in form %}
@@ -21,20 +21,19 @@
             {% if field.help_text %}
               {% if field.name == "password1" %}
                 <small class="text-xs text-gray-500 block mt-1 text-center">
-                  La contraseña debe tener al menos 8 caracteres, no ser solo numérica y no ser común.<br>
-                  Usa mayúsculas, minúsculas y números para mayor seguridad.
+                  {% blocktrans %}Your password must contain at least 8 characters, cannot be entirely numeric, and should not be too common. Use uppercase, lowercase, and numbers for better security.{% endblocktrans %}
                 </small>
               {% elif field.name == "password2" %}
                 <small class="text-xs text-gray-500 block mt-1 text-center">
-                  Repite la contraseña exactamente igual para confirmar.<br>
+                  {% trans "Repeat the password exactly to confirm." %}
                 </small>
               {% elif field.name == "username" %}
                 <small class="text-xs text-gray-500 block mt-1 text-center">
-                  Elige un nombre de usuario único. Solo letras, números y @/./+/-/_<br>
+                  {% trans "Choose a unique username. Only letters, numbers, and @/./+/-/_ are allowed." %}
                 </small>
               {% elif field.name == "email" %}
                 <small class="text-xs text-gray-500 block mt-1 text-center">
-                  Ingresa un correo electrónico válido.<br>
+                  {% trans "Enter a valid email address." %}
                 </small>
               {% else %}
                 <small class="text-xs text-gray-500 block mt-1 text-center">{{ field.help_text|safe|linebreaksbr|default_if_none:"" }}</small>
@@ -45,7 +44,7 @@
             {% endfor %}
           </div>
         {% endfor %}
-        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition">Registrarse</button>
+        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition">{% trans "Sign up" %}</button>
       </form>
       <style>
         input[type="text"], input[type="password"], input[type="email"] {
@@ -60,7 +59,7 @@
           width: 100%;
         }
       </style>
-    <a href="{% url 'home' %}" class="mt-6 inline-block text-red-900 hover:underline">Volver al comercio</a>
+    <a href="{% url 'home' %}" class="mt-6 inline-block text-red-900 hover:underline">{% trans "Back to the store" %}</a>
   </div>
 </body>
 </html>

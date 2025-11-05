@@ -1,11 +1,12 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 
-{% block title %}Pago Exitoso{% endblock %}
+{% block title %}{% trans "Payment successful" %}{% endblock %}
 
 {% block content %}
 <div class="text-center my-5">
-    <h2 class="text-success">✅ ¡Pago realizado con éxito!</h2>
-    <p>Gracias por tu compra. Tu pedido está siendo procesado.</p>
-    <a href="{% url 'products' %}" class="btn btn-primary mt-3">Seguir Comprando</a>
+    <h2 class="text-success">✅ {% trans "Payment completed successfully" %}</h2>
+    <p>{% trans "Thank you for your purchase. Your order is being processed." %}</p>
+    <a href="{% url 'products' %}" class="btn btn-primary mt-3">{% trans "Continue shopping" %}</a>
 </div>
 {% endblock %}

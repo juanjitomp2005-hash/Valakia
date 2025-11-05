@@ -1,11 +1,12 @@
 {% extends 'pages/base.html' %}
-{% block title %} {{title}} {% endblock %}
+{% load i18n %}
+{% block title %} {{ title }} {% endblock %}
 {% block content %}
 <div class="container">
  <div class="row justify-content-center">
  <div class="col-md-8">
  <div class="card">
- <div class="card-header">Create product</div>
+ <div class="card-header">{% trans "Create product" %}</div>
  <div class="card-body">
  {% if form.errors %}
  <ul id="errors" class="alert alert-danger list-unstyled">
@@ -18,10 +19,10 @@
  {% endif %}
 <form method="POST" action="{% url 'form' %}" enctype="multipart/form-data">
   {% csrf_token %}
-  <input type="text" class="form-control mb-2" placeholder="Enter name" name="name" value="{{form.data.name}}" />
-  <input type="text" class="form-control mb-2" placeholder="Enter price" name="price" value="{{form.data.price}}" />
-  <input type="file" class="form-control mb-2" name="image" />   <!-- 👈 input de imagen -->
-  <input type="submit" class="btn btn-primary" value="Send" />
+  <input type="text" class="form-control mb-2" placeholder="{% trans "Enter name" %}" name="name" value="{{ form.data.name }}" />
+  <input type="text" class="form-control mb-2" placeholder="{% trans "Enter price" %}" name="price" value="{{ form.data.price }}" />
+  <input type="file" class="form-control mb-2" name="image" />
+  <input type="submit" class="btn btn-primary" value="{% trans "Send" %}" />
 </form>
  </div>
  </div>

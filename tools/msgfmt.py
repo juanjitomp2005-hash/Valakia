@@ -6,6 +6,7 @@ Usage: python tools/msgfmt.py locale/es/LC_MESSAGES/django.po
 import sys
 import os
 import struct
+import ast
 
 
 def read_po(filename):
@@ -14,64 +15,81 @@ def read_po(filename):
     entries = []
     msgid = None
     msgstr = None
-    collecting = None
-    for line in lines:
-        line = line.strip('\n')
-        if line.startswith('#') or line.strip() == '':
-            if msgid is not None and msgstr is not None:
-                entries.append((msgid, msgstr))
-                msgid = None
-                msgstr = None
-                collecting = None
+    in_msgid = False
+    in_msgstr = False
+
+    def flush_entry():
+        nonlocal msgid, msgstr, in_msgid, in_msgstr
+        if msgid is not None and msgstr is not None:
+            entries.append((msgid, msgstr))
+        msgid = None
+        msgstr = None
+        in_msgid = False
+        in_msgstr = False
+
+    for raw_line in lines:
+        line = raw_line.rstrip('\n')
+        stripped = line.strip()
+        if stripped.startswith('#') or stripped == '':
+            if stripped == '' and msgid is not None and msgstr is not None:
+                flush_entry()
             continue
         if line.startswith('msgid '):
-            collecting = 'id'
-            msgid = line[6:].strip().strip('"')
+            flush_entry()
+            in_msgid = True
+            in_msgstr = False
+            msgid = ast.literal_eval(line[5:].strip())
             continue
         if line.startswith('msgstr '):
-            collecting = 'str'
-            msgstr = line[7:].strip().strip('"')
+            in_msgid = False
+            in_msgstr = True
+            msgstr = ast.literal_eval(line[6:].strip())
             continue
-        if line.startswith('"') and line.endswith('"') and collecting:
-            text = line.strip('"')
-            if collecting == 'id':
+        if line.startswith('"') and line.endswith('"'):
+            text = ast.literal_eval(line.strip())
+            if in_msgid and msgid is not None:
                 msgid += text
-            elif collecting == 'str':
+            elif in_msgstr and msgstr is not None:
                 msgstr += text
+            continue
+        # Any other directive (msgctxt, plurals) not supported; flush to avoid corruption
+        flush_entry()
+
     if msgid is not None and msgstr is not None:
-        entries.append((msgid, msgstr))
+        flush_entry()
     return entries
 
 
 def make_mo(pofile, mofile):
     messages = read_po(pofile)
-    # filter out empty msgid
-    catalog = {msgid: msgstr for msgid, msgstr in messages if msgid}
-    # sort by msgid
-    items = sorted(catalog.items())
+    catalog = {}
+    for msgid, msgstr in messages:
+        if msgid is None or msgstr is None:
+            continue
+        catalog[msgid] = msgstr
+    # sort by msgid (header entry with empty msgid stays first)
+    items = sorted(catalog.items(), key=lambda item: item[0])
     ids = []
     strs = []
     for k, v in items:
         ids.append(k.encode('utf-8'))
         strs.append(v.encode('utf-8'))
-    # prepare header
-    # keys and values must be null-terminated in the blob
-    kblob = b"\0".join(ids) + b"\0"
-    vblob = b"\0".join(strs) + b"\0"
-    keystart = 7 * 4 + 16 * len(ids)
-    # offsets in the tables point into the file where blobs start
-    # compute per-string lengths and offsets
+    header_size = 7 * 4
+    orig_table_offset = header_size
+    trans_table_offset = orig_table_offset + len(ids) * 8
+    string_data_offset = trans_table_offset + len(ids) * 8
+
     offsets = []
-    cur = keystart
+    cur = string_data_offset
     for k in ids:
         offsets.append((len(k), cur))
-        cur += len(k) + 1  # include null terminator
-    valuestart = cur
+        cur += len(k) + 1
+
     valoffsets = []
     for v in strs:
         valoffsets.append((len(v), cur))
         cur += len(v) + 1
-    # write header (use little-endian '<' to ensure standard MO format)
+
     with open(mofile, 'wb') as of:
         # magic
         of.write(struct.pack('<I', 0x950412de))
@@ -80,9 +98,9 @@ def make_mo(pofile, mofile):
         # number of strings
         of.write(struct.pack('<I', len(ids)))
         # offset of table with original strings
-        of.write(struct.pack('<I', keystart))
+        of.write(struct.pack('<I', orig_table_offset))
         # offset of table with translation strings
-        of.write(struct.pack('<I', valuestart))
+        of.write(struct.pack('<I', trans_table_offset))
         # size/offset of hash table (unused)
         of.write(struct.pack('<I', 0))
         of.write(struct.pack('<I', 0))
@@ -91,9 +109,11 @@ def make_mo(pofile, mofile):
             of.write(struct.pack('<II', l, o))
         for l, o in valoffsets:
             of.write(struct.pack('<II', l, o))
-        # blobs
-        of.write(kblob)
-        of.write(vblob)
+        # blobs (null-terminated)
+        for k in ids:
+            of.write(k + b'\0')
+        for v in strs:
+            of.write(v + b'\0')
 
 
 if __name__ == '__main__':

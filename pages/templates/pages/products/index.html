@@ -26,7 +26,7 @@
           </div>
         {% else %}
           <div class="w-100 d-flex justify-content-center align-items-center" style="height: 180px;">
-            <img src="{% static 'img/no-image.png' %}" class="img-fluid rounded mx-auto d-block" alt="No image" style="max-height: 160px; object-fit: contain; width: auto; max-width: 100%;">
+            <img src="{% static 'img/no-image.png' %}" class="img-fluid rounded mx-auto d-block" alt="{% trans 'No image' %}" style="max-height: 160px; object-fit: contain; width: auto; max-width: 100%;">
           </div>
         {% endif %}
         <div class="card-body text-center d-flex flex-column flex-grow-1">
@@ -99,7 +99,7 @@
             // Mostrar notificación enviada por el backend
             if (data.message) showAlert(data.message, 'success');
           } else {
-            alert("An error occurred while adding the product.");
+            alert('{% trans "An error occurred while adding the product." %}');
           }
         })
         .catch(err => console.error(err));

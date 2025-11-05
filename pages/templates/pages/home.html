@@ -1,6 +1,7 @@
 {% extends 'pages/base.html' %}
 {% load static %}
-{% block title %}'Home Page - Online Store'{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Home Page - Online Store" %}{% endblock %}
 {% block content %}
 <div class="container my-4 d-flex justify-content-center">
   <div id="carouselExample" class="carousel slide w-100" data-bs-ride="carousel" style="max-height: 50vh; overflow: hidden; border-radius: 20px;">
@@ -17,11 +18,11 @@
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
       <span class="carousel-control-prev-icon"></span>
-      <span class="visually-hidden">Previous</span>
+      <span class="visually-hidden">{% trans "Previous" %}</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
       <span class="carousel-control-next-icon"></span>
-      <span class="visually-hidden">Next</span>
+      <span class="visually-hidden">{% trans "Next" %}</span>
     </button>
   </div>
 </div>
@@ -30,7 +31,7 @@
 <div class="container my-5">
   <!-- Sección: Productos más vendidos -->
   <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-4">Productos más vendidos</h2>
+    <h2 class="text-2xl font-bold mb-4">{% trans "Best sellers" %}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
       
       {% for producto in productos_mas_vendidos %}
@@ -39,7 +40,7 @@
           {% if producto.image %}
             <img src="{{ producto.image.url }}" alt="{{ producto.name }}" class="w-32 h-32 object-cover rounded-lg mb-2 hover:scale-105 transition">
           {% else %}
-            <img src="{% static 'img/no-image.png' %}" alt="Sin imagen" class="w-32 h-32 object-cover rounded-lg mb-2 hover:scale-105 transition">
+            <img src="{% static 'img/no-image.png' %}" alt="{% trans 'Placeholder image' %}" class="w-32 h-32 object-cover rounded-lg mb-2 hover:scale-105 transition">
           {% endif %}
         </a>
         <span class="font-semibold text-lg text-gray-800">{{ producto.name }}</span>
@@ -47,20 +48,20 @@
       {% empty %}
       <!-- Ejemplo estático si la lista está vacía -->
       <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-        <img src="https://via.placeholder.com/150" alt="Producto 1" class="w-32 h-32 object-cover rounded-lg mb-2">
-        <span class="font-semibold text-lg text-gray-800">Producto 1</span>
+  <img src="https://via.placeholder.com/150" alt="{% trans 'Sample product' %}" class="w-32 h-32 object-cover rounded-lg mb-2">
+        <span class="font-semibold text-lg text-gray-800">{% trans "Sample product" %}</span>
       </div>
       <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-        <img src="https://via.placeholder.com/150" alt="Producto 2" class="w-32 h-32 object-cover rounded-lg mb-2">
-        <span class="font-semibold text-lg text-gray-800">Producto 2</span>
+  <img src="https://via.placeholder.com/150" alt="{% trans 'Sample product' %}" class="w-32 h-32 object-cover rounded-lg mb-2">
+        <span class="font-semibold text-lg text-gray-800">{% trans "Sample product" %}</span>
       </div>
       <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-        <img src="https://via.placeholder.com/150" alt="Producto 3" class="w-32 h-32 object-cover rounded-lg mb-2">
-        <span class="font-semibold text-lg text-gray-800">Producto 3</span>
+  <img src="https://via.placeholder.com/150" alt="{% trans 'Sample product' %}" class="w-32 h-32 object-cover rounded-lg mb-2">
+        <span class="font-semibold text-lg text-gray-800">{% trans "Sample product" %}</span>
       </div>
       <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-        <img src="https://via.placeholder.com/150" alt="Producto 4" class="w-32 h-32 object-cover rounded-lg mb-2">
-        <span class="font-semibold text-lg text-gray-800">Producto 4</span>
+  <img src="https://via.placeholder.com/150" alt="{% trans 'Sample product' %}" class="w-32 h-32 object-cover rounded-lg mb-2">
+        <span class="font-semibold text-lg text-gray-800">{% trans "Sample product" %}</span>
       </div>
       {% endfor %}
     </div>
@@ -76,16 +77,16 @@
           {% if producto_aleatorio.image %}
             <img src="{{ producto_aleatorio.image.url }}" alt="{{ producto_aleatorio.name }}" class="w-40 h-40 object-cover rounded-lg hover:scale-105 transition">
           {% else %}
-            <img src="{% static 'img/no-image.png' %}" alt="Sin imagen" class="w-40 h-40 object-cover rounded-lg hover:scale-105 transition">
+            <img src="{% static 'img/no-image.png' %}" alt="{% trans 'Placeholder image' %}" class="w-40 h-40 object-cover rounded-lg hover:scale-105 transition">
           {% endif %}
         </a>
       </div>
       <div class="flex-1 md:pl-8 text-center md:text-left">
-        <h2 class="text-2xl font-bold mb-2 text-red-700">¡Producto del día!</h2>
+        <h2 class="text-2xl font-bold mb-2 text-red-700">{% trans "Product of the day" %}</h2>
         <span class="font-semibold text-xl text-gray-800 block mb-1">{{ producto_aleatorio.name }}</span>
         <span class="text-gray-700 text-base block mb-2">{{ producto_aleatorio.descripcion }}</span>
         <span class="text-green-700 font-bold text-lg block mb-2">${{ producto_aleatorio.price }} COP</span>
-        <a href="{% url 'show' id=producto_aleatorio.id %}" class="inline-block bg-red-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-800 transition">Ver detalles</a>
+        <a href="{% url 'show' id=producto_aleatorio.id %}" class="inline-block bg-red-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-800 transition">{% trans "View details" %}</a>
       </div>
     </div>
   </div>
@@ -93,29 +94,29 @@
 
   <!-- Sección: Conoce nuestros productos -->
   <div class="mb-8 bg-white rounded-xl shadow p-6 flex flex-col items-center">
-    <h2 class="text-2xl font-bold mb-4">Conoce nuestros productos</h2>
-    <p class="mb-4 text-gray-700 text-center">Descubre la variedad y calidad de nuestros productos pensados para ti.</p>
-    <a href="{% url 'products' %}" class="bg-red-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-red-800 transition">Ver productos</a>
+    <h2 class="text-2xl font-bold mb-4">{% trans "Discover our products" %}</h2>
+    <p class="mb-4 text-gray-700 text-center">{% trans "Explore the variety and quality of items we curate for you." %}</p>
+    <a href="{% url 'products' %}" class="bg-red-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-red-800 transition">{% trans "View products" %}</a>
   </div>
 
   <!-- Sección: Clientes satisfechos -->
   <div class="bg-white rounded-xl shadow p-6">
-    <h2 class="text-2xl font-bold mb-4 text-center">Clientes satisfechos</h2>
+    <h2 class="text-2xl font-bold mb-4 text-center">{% trans "Happy customers" %}</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="flex flex-col items-center">
         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente 1" class="w-16 h-16 rounded-full mb-2">
-        <p class="italic text-gray-600 text-center">"Excelente calidad y atención. ¡Repetiré mi compra!"</p>
-        <span class="font-semibold mt-2">Juan P.</span>
+        <p class="italic text-gray-600 text-center">{% trans "Excellent quality and service. I will buy again!" %}</p>
+        <span class="font-semibold mt-2">{% trans "John P." %}</span>
       </div>
       <div class="flex flex-col items-center">
         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Cliente 2" class="w-16 h-16 rounded-full mb-2">
-        <p class="italic text-gray-600 text-center">"Me encantaron los productos, llegaron rápido y en perfecto estado."</p>
-        <span class="font-semibold mt-2">María G.</span>
+        <p class="italic text-gray-600 text-center">{% trans "I loved the products, they arrived quickly and in perfect condition." %}</p>
+        <span class="font-semibold mt-2">{% trans "Mary G." %}</span>
       </div>
       <div class="flex flex-col items-center">
         <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Cliente 3" class="w-16 h-16 rounded-full mb-2">
-        <p class="italic text-gray-600 text-center">"Muy recomendable, atención personalizada y productos únicos."</p>
-        <span class="font-semibold mt-2">Carlos R.</span>
+        <p class="italic text-gray-600 text-center">{% trans "Highly recommended, personalized service and unique products." %}</p>
+        <span class="font-semibold mt-2">{% trans "Charles R." %}</span>
       </div>
     </div>
   </div>

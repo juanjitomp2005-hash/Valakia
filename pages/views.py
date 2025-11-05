@@ -35,13 +35,14 @@ def add_to_cart(request, product_id):
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             total_items = sum(item.quantity for item in cart.cartitem_set.all())
-            # Also return a message so AJAX frontend can show a notification
-            return JsonResponse({"success": True, "cart_count": total_items, "message": "Product added to cart."})
+            return JsonResponse({
+                "success": True,
+                "cart_count": total_items,
+                "message": _("Product added to cart."),
+            })
 
-            # Add flash message for normal (non-AJAX) requests
-            messages.success(request, _("Product added to cart."))
-            return redirect("cart")
-        return redirect("index")
+        messages.success(request, _("Product added to cart."))
+        return redirect("cart")
 
 @login_required
 def remove_from_cart(request, product_id):
@@ -144,8 +145,8 @@ class ProductShowView(View):
     def get(self, request, id):
         viewData = {}
         product = Product.objects.get(pk=id)  # ✅ busca en la BD
-        viewData["title"] = product.name + " - Online Store"
-        viewData["subtitle"] = product.name + " - Product information"
+        viewData["title"] = _("%(product)s - Online Store") % {"product": product.name}
+        viewData["subtitle"] = _("%(product)s - Product information") % {"product": product.name}
         viewData["product"] = product
         # Contar productos en carrito si autenticado
         if request.user.is_authenticated:
@@ -157,8 +158,8 @@ class ProductShowView(View):
         return render(request, self.template_name, viewData)
 
 class ProductForm(forms.Form):
-    name = forms.CharField(required=True)
-    price = forms.FloatField(required=True)
+    name = forms.CharField(required=True, label=_("Name"))
+    price = forms.FloatField(required=True, label=_("Price"))
 
 
 class ProductCreateView(View):
@@ -167,7 +168,7 @@ class ProductCreateView(View):
     def get(self, request):
         form = ProductForm()
         viewData = {}
-        viewData["title"] = "Create product"
+        viewData["title"] = _("Create product")
         viewData["form"] = form
         return render(request, self.template_name, viewData)
 
@@ -177,6 +178,6 @@ class ProductCreateView(View):
            return redirect("products") 
         else:
             viewData = {}
-            viewData["title"] = "Create product"
+            viewData["title"] = _("Create product")
             viewData["form"] = form
             return render(request, self.template_name, viewData)

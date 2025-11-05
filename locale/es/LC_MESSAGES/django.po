@@ -1,0 +1,281 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Valakia\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-05 00:00+0000\n"
+"PO-Revision-Date: 2025-11-05 00:00+0000\n"
+"Last-Translator: Victor Chavez <victor@example.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Free shipping on orders over $100!"
+msgstr "¡Envío gratis en pedidos superiores a $100!"
+
+msgid "Home"
+msgstr "Inicio"
+
+msgid "About"
+msgstr "Nosotros"
+
+msgid "Products"
+msgstr "Productos"
+
+msgid "Cart"
+msgstr "Carrito"
+
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+msgid "Login"
+msgstr "Iniciar sesión"
+
+msgid "Register"
+msgstr "Registrarse"
+
+msgid "All rights reserved."
+msgstr "Todos los derechos reservados."
+
+msgid "Home Page - Online Store"
+msgstr "Página principal - Tienda en línea"
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Next"
+msgstr "Siguiente"
+
+msgid "Best sellers"
+msgstr "Más vendidos"
+
+msgid "Placeholder image"
+msgstr "Imagen de referencia"
+
+msgid "Sample product"
+msgstr "Producto de ejemplo"
+
+msgid "Product of the day"
+msgstr "Producto del día"
+
+msgid "View details"
+msgstr "Ver detalles"
+
+msgid "Discover our products"
+msgstr "Conoce nuestros productos"
+
+msgid "Explore the variety and quality of items we curate for you."
+msgstr "Descubre la variedad y calidad de artículos que seleccionamos para ti."
+
+msgid "View products"
+msgstr "Ver productos"
+
+msgid "Happy customers"
+msgstr "Clientes satisfechos"
+
+msgid "Excellent quality and service. I will buy again!"
+msgstr "Excelente calidad y atención. ¡Volveré a comprar!"
+
+msgid "John P."
+msgstr "Juan P."
+
+msgid "I loved the products, they arrived quickly and in perfect condition."
+msgstr "Me encantaron los productos, llegaron rápido y en perfecto estado."
+
+msgid "Mary G."
+msgstr "María G."
+
+msgid "Highly recommended, personalized service and unique products."
+msgstr "Muy recomendable, atención personalizada y productos únicos."
+
+msgid "Charles R."
+msgstr "Carlos R."
+
+msgid "Search by name..."
+msgstr "Buscar por nombre..."
+
+msgid "Sort by"
+msgstr "Ordenar por"
+
+msgid "Lowest price"
+msgstr "Menor precio"
+
+msgid "Highest price"
+msgstr "Mayor precio"
+
+msgid "Filter"
+msgstr "Filtrar"
+
+msgid "Add to cart"
+msgstr "Agregar al carrito"
+
+msgid "Log in to buy"
+msgstr "Inicia sesión para comprar"
+
+msgid "No products available."
+msgstr "No hay productos disponibles."
+
+msgid "No image"
+msgstr "Sin imagen"
+
+msgid "An error occurred while adding the product."
+msgstr "Ocurrió un error al agregar el producto."
+
+msgid "Sold:"
+msgstr "Vendidos:"
+
+msgid "My Cart"
+msgstr "Mi carrito"
+
+msgid "Remove"
+msgstr "Eliminar"
+
+msgid "Total:"
+msgstr "Total:"
+
+msgid "You have no products in the cart."
+msgstr "No tienes productos en el carrito."
+
+msgid "Payment cancelled"
+msgstr "Pago cancelado"
+
+msgid "It looks like you cancelled the payment process. Feel free to try again whenever you are ready."
+msgstr "Parece que cancelaste el proceso de pago. Puedes intentarlo nuevamente cuando quieras."
+
+msgid "Return to cart"
+msgstr "Volver al carrito"
+
+msgid "Payment successful"
+msgstr "Pago exitoso"
+
+msgid "Payment completed successfully"
+msgstr "¡Pago realizado con éxito!"
+
+msgid "Thank you for your purchase. Your order is being processed."
+msgstr "Gracias por tu compra. Tu pedido está siendo procesado."
+
+msgid "Continue shopping"
+msgstr "Seguir comprando"
+
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+msgid "Sign in"
+msgstr "Entrar"
+
+msgid "Back to the store"
+msgstr "Volver al comercio"
+
+msgid "Create account"
+msgstr "Crear cuenta"
+
+msgid "Your password must contain at least 8 characters, cannot be entirely numeric, and should not be too common. Use uppercase, lowercase, and numbers for better security."
+msgstr "Tu contraseña debe tener al menos 8 caracteres, no ser completamente numérica y no ser demasiado común. Usa mayúsculas, minúsculas y números para mayor seguridad."
+
+msgid "Repeat the password exactly to confirm."
+msgstr "Repite la contraseña exactamente para confirmar."
+
+msgid "Choose a unique username. Only letters, numbers, and @/./+/-/_ are allowed."
+msgstr "Elige un nombre de usuario único. Solo se permiten letras, números y @/./+/-/_."
+
+msgid "Enter a valid email address."
+msgstr "Ingresa una dirección de correo válida."
+
+msgid "Sign up"
+msgstr "Registrarme"
+
+msgid "About our store"
+msgstr "Sobre nuestra tienda"
+
+msgid "Technology store"
+msgstr "Tienda de tecnología"
+
+msgid "At Valakia, we specialize in cutting-edge computers and home appliances. Since day one, we have committed to high-quality products, innovative technologies, and exceptional customer service. Our passion is helping you find the perfect equipment for your home or business, backed by expert guidance and reliable warranties."
+msgstr "En Valakia nos especializamos en computadores y electrodomésticos de última generación. Desde el primer día nos hemos comprometido con productos de alta calidad, tecnologías innovadoras y un servicio al cliente excepcional. Nuestra pasión es ayudarte a encontrar el equipo perfecto para tu hogar o negocio, con asesoría experta y garantías confiables."
+
+msgid "Founders"
+msgstr "Fundadores"
+
+msgid "Founder Victor"
+msgstr "Fundador Víctor"
+
+msgid "Systems engineer and technology enthusiast. Victor leads Valakia's technical vision."
+msgstr "Ingeniero de sistemas y apasionado por la tecnología. Víctor lidera la visión tecnológica de Valakia."
+
+msgid "Founder Juan Jose"
+msgstr "Fundador Juan José"
+
+msgid "Sales and customer care expert. Juan Jose ensures every visitor enjoys a tailored experience and finds the ideal product."
+msgstr "Experto en ventas y servicio al cliente. Juan José se asegura de que cada visitante disfrute de una experiencia personalizada y encuentre el producto ideal."
+
+msgid "Founder Maflita"
+msgstr "Fundadora Maflita"
+
+msgid "Our spirit of fun and energy, always bringing good vibes to the team."
+msgstr "Nuestro espíritu de diversión y energía, siempre contagiando buenas vibras al equipo."
+
+msgid "Vision and Mission"
+msgstr "Visión y misión"
+
+msgid "Vision"
+msgstr "Visión"
+
+msgid "To be the leading technology and appliance store in the region, recognized for innovation, quality, and the trust we provide our customers."
+msgstr "Ser la tienda líder en tecnología y electrodomésticos de la región, reconocida por la innovación, la calidad y la confianza que brindamos a nuestros clientes."
+
+msgid "Mission"
+msgstr "Misión"
+
+msgid "To deliver high-quality computers and appliances with personalized service and technological solutions that improve our customers' lives."
+msgstr "Ofrecer computadores y electrodomésticos de alta calidad con un servicio personalizado y soluciones tecnológicas que mejoren la vida de nuestros clientes."
+
+msgid "Create product"
+msgstr "Crear producto"
+
+msgid "Enter name"
+msgstr "Ingresa el nombre"
+
+msgid "Enter price"
+msgstr "Ingresa el precio"
+
+msgid "Send"
+msgstr "Enviar"
+
+msgid "Product added to cart."
+msgstr "Producto añadido al carrito."
+
+msgid "Product removed from cart."
+msgstr "Producto eliminado del carrito."
+
+msgid "About us - Online Store"
+msgstr "Nosotros - Tienda en línea"
+
+msgid "About us"
+msgstr "Nosotros"
+
+msgid "This is an about page ..."
+msgstr "Esta es una página de información ..."
+
+msgid "Developed by: Juan Jose Montoya"
+msgstr "Desarrollado por: Juan José Montoya"
+
+msgid "Products - Online Store"
+msgstr "Productos - Tienda en línea"
+
+msgid "List of products"
+msgstr "Lista de productos"
+
+msgid "%(product)s - Online Store"
+msgstr "%(product)s - Tienda en línea"
+
+msgid "%(product)s - Product information"
+msgstr "%(product)s - Información del producto"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Price"
+msgstr "Precio"
+*** End of File***
