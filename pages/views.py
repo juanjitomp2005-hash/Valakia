@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_GET
 from .models import Product, CartItem, Cart
 from django.shortcuts import get_object_or_404
 from django.conf import settings
@@ -181,3 +182,20 @@ class ProductCreateView(View):
             viewData["title"] = _("Create product")
             viewData["form"] = form
             return render(request, self.template_name, viewData)
+
+
+@require_GET
+def product_inventory_api(request):
+    products = Product.objects.filter(stock__gt=0).order_by("name")
+    data = {
+        "products": [
+            {
+                "id": product.id,
+                "name": product.name,
+                "price": str(product.price),
+                "stock": product.stock,
+            }
+            for product in products
+        ]
+    }
+    return JsonResponse(data)

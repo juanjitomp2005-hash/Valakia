@@ -5,5 +5,8 @@
     <li>
         <a href="{% url 'admin:pages_product_export_inventory' %}" class="historylink">{% trans "Download inventory PDF" %}</a>
     </li>
+    <li>
+        <a href="{% url 'admin:pages_product_consume_api' %}" class="historylink">{% trans "Consume API" %}</a>
+    </li>
     {{ block.super }}
 {% endblock %}

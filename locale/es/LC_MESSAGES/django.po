@@ -264,6 +264,24 @@ msgstr "Producto"
 msgid "Download inventory PDF"
 msgstr "Descargar inventario en PDF"
 
+msgid "Consume API"
+msgstr "Consumir API"
+
+msgid "Provide the endpoint you want to query and the response will be rendered as plain text."
+msgstr "Ingresa el endpoint que deseas consultar y la respuesta se mostrará como texto plano."
+
+msgid "Endpoint URL"
+msgstr "URL del endpoint"
+
+msgid "Fetch"
+msgstr "Consultar"
+
+msgid "Response"
+msgstr "Respuesta"
+
+msgid "You must provide an endpoint URL."
+msgstr "Debes ingresar una URL de endpoint."
+
 msgid "About us - Online Store"
 msgstr "Nosotros - Tienda en línea"
 

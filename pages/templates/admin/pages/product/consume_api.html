@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:pages_product_changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+    &rsaquo; {% trans "Consume API" %}
+  </div>
+{% endblock %}
+
+{% block content %}
+  <h1>{% trans "Consume API" %}</h1>
+  <p>{% trans "Provide the endpoint you want to query and the response will be rendered as plain text." %}</p>
+
+  <form method="post" class="module">
+    {% csrf_token %}
+    <fieldset class="aligned">
+      <div class="form-row">
+        <label for="id_endpoint">{% trans "Endpoint URL" %}</label>
+        <input type="url" name="endpoint" id="id_endpoint" class="vTextField" value="{{ endpoint }}" size="80" required>
+      </div>
+    </fieldset>
+    <div class="submit-row">
+      <input type="submit" value="{% trans 'Fetch' %}" class="default">
+    </div>
+  </form>
+
+  {% if error %}
+    <p class="errornote">{{ error }}</p>
+  {% endif %}
+
+  {% if response_text %}
+    <h2>{% trans "Response" %}</h2>
+    <pre style="white-space: pre-wrap; word-break: break-word;">
+{{ response_text|escape }}
+    </pre>
+  {% endif %}
+{% endblock %}
