@@ -1,18 +1,60 @@
-# Archivos de Python
+# -----------------------------
+# Ignorar archivos y carpetas comunes
+# -----------------------------
+
+# Archivos de Python (bytecode / caches)
 __pycache__/
-*.pyc
+**/__pycache__/
+*.py[cod]
 *.pyo
 *.pyd
 
-# Entornos virtuales
+# Entornos virtuales y archivos de entorno
 venv/
-.env/
+env/
+.venv/
+.env
+.env.*
 
-
-# Archivos de Django
+# Archivos de Django / base de datos local
+db.sqlite3
+*.sqlite3
+media/
 staticfiles/
 
-
-# Archivos de IDEs
+# Archivos de IDEs / editores
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+
+# Test / cobertura / caches
+.pytest_cache/
+.coverage
+coverage.xml
+nose2-junit.xml
+
+# Packaging / build
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+pip-log.txt
+
+# PyInstaller
+*.spec
+
+# Misc
+.mypy_cache/
+.cache/
+.eggs/
+
+# Local Python envs
+.python-version
+
+# End of .gitignore
