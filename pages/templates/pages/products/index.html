@@ -1,18 +1,19 @@
 {% extends 'pages/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block title %} {{ title }} {% endblock %}
 {% block header_title %} {{ subtitle }} {% endblock %}
 
 {% block content %}
 <form method="get" class="mb-4 d-flex flex-wrap align-items-center gap-2">
-  <input type="text" name="q" class="form-control w-auto" placeholder="Buscar por nombre..." value="{{ query|default:'' }}">
+  <input type="text" name="q" class="form-control w-auto" placeholder="{% trans "Search by name..." %}" value="{{ query|default:'' }}">
   <select name="order" class="form-select w-auto">
-    <option value="">Ordenar por</option>
-    <option value="price_asc" {% if request.GET.order == 'price_asc' %}selected{% endif %}>Menor precio</option>
-    <option value="price_desc" {% if request.GET.order == 'price_desc' %}selected{% endif %}>Mayor precio</option>
+    <option value="">{% trans "Sort by" %}</option>
+    <option value="price_asc" {% if request.GET.order == 'price_asc' %}selected{% endif %}>{% trans "Lowest price" %}</option>
+    <option value="price_desc" {% if request.GET.order == 'price_desc' %}selected{% endif %}>{% trans "Highest price" %}</option>
   </select>
-  <button type="submit" class="bg-red-900 text-white py-2 px-4 rounded">Filtrar</button>
+  <button type="submit" class="bg-red-900 text-white py-2 px-4 rounded">{% trans "Filter" %}</button>
 </form>
 
 <div class="row g-3">
@@ -31,25 +32,25 @@
         <div class="card-body text-center d-flex flex-column flex-grow-1">
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text text-muted">{{ product.price }} COP</p>
-          <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">Ver detalles</a>
+          <a href="{% url 'show' id=product.id %}" class="btn btn-primary btn-sm mb-2">{% trans "View details" %}</a>
           {% if user.is_authenticated %}
             <button type="button" 
                     class="btn btn-success btn-sm add-to-cart-btn" 
                     data-product-id="{{ product.id }}" 
                     data-csrf-token="{{ csrf_token }}">
-              Añadir al carrito
+              {% trans "Add to cart" %}
             </button>
           {% else %}
             <a href="{% url 'login' %}?next={% url 'products' %}" 
                class="btn btn-warning btn-sm">
-              Inicia sesión para comprar
+              {% trans "Log in to buy" %}
             </a>
           {% endif %}
         </div>
       </div>
     </div>
   {% empty %}
-    <p class="text-center">No hay productos disponibles.</p>
+    <p class="text-center">{% trans "No products available." %}</p>
   {% endfor %}
 </div>
 
@@ -57,6 +58,20 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Helper para mostrar alertas Bootstrap desde JS
+    function showAlert(message, type = 'success', timeout = 4000) {
+      const container = document.getElementById('ajax-messages-container');
+      if (!container) return;
+      const wrapper = document.createElement('div');
+      wrapper.className = `alert alert-${type} alert-dismissible fade show`;
+      wrapper.setAttribute('role', 'alert');
+      wrapper.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+      container.appendChild(wrapper);
+      // Desaparecer automáticamente
+      setTimeout(() => {
+        try { bootstrap.Alert.getOrCreateInstance(wrapper).close(); } catch(e) { wrapper.remove(); }
+      }, timeout);
+    }
     document.querySelectorAll('.add-to-cart-btn').forEach(function(btn) {
       btn.addEventListener('click', function(e) {
         const productId = btn.getAttribute('data-product-id');
@@ -81,8 +96,10 @@
               el.textContent = data.cart_count;
               el.style.display = data.cart_count > 0 ? '' : 'none';
             });
+            // Mostrar notificación enviada por el backend
+            if (data.message) showAlert(data.message, 'success');
           } else {
-            alert("Ocurrió un error al añadir el producto.");
+            alert("An error occurred while adding the product.");
           }
         })
         .catch(err => console.error(err));

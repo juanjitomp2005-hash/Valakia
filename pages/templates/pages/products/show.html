@@ -1,5 +1,6 @@
 {% extends 'pages/base.html' %}
-{% load static %} 
+{% load static %}
+{% load i18n %}
 {% block title %} {{title}} {% endblock %}
 {% block header_title %} {{subtitle}} {% endblock %}
 {% block content %}
@@ -17,9 +18,9 @@
         <div class="card-body">
           <h2 class="card-title mb-3 fw-bold text-red-900" style="font-size:2rem;">{{ product.name }}</h2>
           <p class="text-muted mb-2" style="font-size:1.1rem;">{{ product.descripcion }}</p>
-          <p class="mb-2"><span class="badge bg-secondary">Vendidos: {{ product.cantidad_vendidos }}</span></p>
+          <p class="mb-2"><span class="badge bg-secondary">{% trans "Sold:" %} {{ product.cantidad_vendidos }}</span></p>
           <p class="h4 mb-4 text-success">${{ product.price }} COP</p>
-          <button type="button" class="btn btn-success btn-lg add-to-cart-btn" data-product-id="{{ product.id }}" data-csrf-token="{{ csrf_token }}">Añadir al carrito</button>
+          <button type="button" class="btn btn-success btn-lg add-to-cart-btn" data-product-id="{{ product.id }}" data-csrf-token="{{ csrf_token }}">{% trans "Add to cart" %}</button>
         </div>
       </div>
     </div>
@@ -28,6 +29,19 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Helper para mostrar alertas Bootstrap desde JS (peticiones AJAX)
+    function showAlert(message, type = 'success', timeout = 4000) {
+      const container = document.getElementById('ajax-messages-container');
+      if (!container) return;
+      const wrapper = document.createElement('div');
+      wrapper.className = `alert alert-${type} alert-dismissible fade show`;
+      wrapper.setAttribute('role', 'alert');
+      wrapper.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+      container.appendChild(wrapper);
+      setTimeout(() => {
+        try { bootstrap.Alert.getOrCreateInstance(wrapper).close(); } catch(e) { wrapper.remove(); }
+      }, timeout);
+    }
     document.querySelectorAll('.add-to-cart-btn').forEach(function(btn) {
       btn.addEventListener('click', function(e) {
         const productId = btn.getAttribute('data-product-id');
@@ -52,6 +66,7 @@
               el.textContent = data.cart_count;
               el.style.display = data.cart_count > 0 ? '' : 'none';
             });
+            if (data.message) showAlert(data.message, 'success');
           }
         });
       });
