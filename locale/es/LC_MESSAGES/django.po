@@ -249,6 +249,21 @@ msgstr "Producto añadido al carrito."
 msgid "Product removed from cart."
 msgstr "Producto eliminado del carrito."
 
+msgid "Stock"
+msgstr "Inventario"
+
+msgid "Inventory report"
+msgstr "Reporte de inventario"
+
+msgid "Generated on"
+msgstr "Generado el"
+
+msgid "Product"
+msgstr "Producto"
+
+msgid "Download inventory PDF"
+msgstr "Descargar inventario en PDF"
+
 msgid "About us - Online Store"
 msgstr "Nosotros - Tienda en línea"
 

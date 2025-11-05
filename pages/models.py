@@ -10,6 +10,7 @@ class Product(models.Model):
     descripcion = models.TextField(blank=True, verbose_name=_("Description"))
     cantidad_vendidos = models.PositiveIntegerField(default=0, verbose_name=_("Quantity sold"))
     es_producto_dia = models.BooleanField(default=False, verbose_name=_("Is product of the day?"))
+    stock = models.PositiveIntegerField(default=0, verbose_name=_("Stock"))
 
     def __str__(self):
         return self.name
