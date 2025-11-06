@@ -6,7 +6,50 @@
 {% block content %}
 <div class="text-center my-5">
     <h2 class="text-success">✅ {% trans "Payment completed successfully" %}</h2>
-    <p>{% trans "Thank you for your purchase. Your order is being processed." %}</p>
-    <a href="{% url 'products' %}" class="btn btn-primary mt-3">{% trans "Continue shopping" %}</a>
+        <p>{% trans "Thank you for your purchase. Your order is being processed." %}</p>
+</div>
+
+{% if order %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h3 class="card-title">{% trans "Order summary" %}</h3>
+            <p class="card-text">
+                <strong>{% trans "Preference" %}:</strong> {{ order.preference_id }}<br>
+                <strong>{% trans "Status" %}:</strong> {{ order.get_status_display }}<br>
+                {% if order.payment_id %}
+                    <strong>{% trans "Payment ID" %}:</strong> {{ order.payment_id }}<br>
+                {% endif %}
+                <strong>{% trans "Total" %}:</strong> ${{ order.total }}
+            </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Product" %}</th>
+                            <th>{% trans "Quantity" %}</th>
+                            <th>{% trans "Unit price" %}</th>
+                            <th>{% trans "Subtotal" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                            <tr>
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.unit_price }}</td>
+                                <td>${{ item.get_total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'order_detail' order.pk %}" class="btn btn-outline-primary">{% trans "View invoice" %}</a>
+        </div>
+    </div>
+{% endif %}
+
+<div class="d-flex gap-2">
+    <a href="{% url 'products' %}" class="btn btn-primary">{% trans "Continue shopping" %}</a>
+    <a href="{% url 'orders_list' %}" class="btn btn-secondary">{% trans "My orders" %}</a>
 </div>
 {% endblock %}

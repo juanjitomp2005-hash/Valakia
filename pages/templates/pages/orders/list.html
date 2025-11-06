@@ -1,0 +1,41 @@
+{% extends "pages/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "My orders" %}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{% trans "My orders" %}</h2>
+
+{% if orders %}
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>{% trans "Date" %}</th>
+          <th>{% trans "Preference" %}</th>
+          <th>{% trans "Status" %}</th>
+          <th>{% trans "Total" %}</th>
+          <th>{% trans "Invoice" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+            <td>{{ order.preference_id }}</td>
+            <td>{{ order.get_status_display }}</td>
+            <td>${{ order.total }}</td>
+            <td>
+              <a href="{% url 'order_detail' order.pk %}" class="btn btn-outline-primary btn-sm">
+                {% trans "View" %}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>{% trans "You have not completed any orders yet." %}</p>
+{% endif %}
+{% endblock %}

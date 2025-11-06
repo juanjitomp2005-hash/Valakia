@@ -150,6 +150,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+
+# Payments
+# Default to Mercado Pago sandbox credentials so the checkout button works out of the box in development.
+MERCADOPAGO_ACCESS_TOKEN = os.environ.get(
+    'MERCADOPAGO_ACCESS_TOKEN',
+    'TEST-4229180293398569-110507-67726be9680f0a8100e8d73d46d521ab-513090848',
+)
+MERCADOPAGO_PUBLIC_KEY = os.environ.get(
+    'MERCADOPAGO_PUBLIC_KEY',
+    'TEST-92d8c8f6-025e-404b-ad56-bfb3f3bade08',
+)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

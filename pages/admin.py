@@ -11,7 +11,7 @@ from django.template.response import TemplateResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-from .models import Product
+from .models import Order, OrderItem, Product
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -114,3 +114,31 @@ class ProductAdmin(admin.ModelAdmin):
 		return TemplateResponse(request, "admin/pages/product/consume_api.html", context)
 
 admin.site.register(Product, ProductAdmin)
+
+
+class OrderItemInline(admin.TabularInline):
+	model = OrderItem
+	extra = 0
+	readonly_fields = ("product_name", "quantity", "unit_price", "get_total")
+
+	def get_total(self, obj):
+		return obj.get_total()
+
+	get_total.short_description = "Total"
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+	list_display = ("preference_id", "user", "status", "total", "created_at")
+	list_filter = ("status", "created_at")
+	search_fields = ("preference_id", "payment_id", "user__username")
+	inlines = [OrderItemInline]
+	readonly_fields = (
+		"preference_id",
+		"payment_id",
+		"status",
+		"status_detail",
+		"total",
+		"created_at",
+		"updated_at",
+	)

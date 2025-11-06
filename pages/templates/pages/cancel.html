@@ -5,8 +5,24 @@
 
 {% block content %}
 <div class="text-center my-5">
-    <h2 class="text-danger">❌ {% trans "Payment cancelled" %}</h2>
-    <p>{% trans "It looks like you cancelled the payment process. Feel free to try again whenever you are ready." %}</p>
-    <a href="{% url 'cart' %}" class="btn btn-warning mt-3">{% trans "Return to cart" %}</a>
+        <h2 class="text-danger">❌ {% trans "Payment cancelled" %}</h2>
+        <p>{% trans "It looks like you cancelled the payment process. Feel free to try again whenever you are ready." %}</p>
+        {% if order %}
+            <div class="card mt-4 text-start">
+                <div class="card-body">
+                    <h3 class="card-title">{% trans "Order summary" %}</h3>
+                    <p class="card-text">
+                        <strong>{% trans "Preference" %}:</strong> {{ order.preference_id }}<br>
+                        <strong>{% trans "Status" %}:</strong> {{ order.get_status_display }}<br>
+                        {% if order.payment_id %}
+                            <strong>{% trans "Payment ID" %}:</strong> {{ order.payment_id }}<br>
+                        {% endif %}
+                        <strong>{% trans "Total" %}:</strong> ${{ order.total }}
+                    </p>
+                    <a href="{% url 'order_detail' order.pk %}" class="btn btn-outline-primary">{% trans "View invoice" %}</a>
+                </div>
+            </div>
+        {% endif %}
+        <a href="{% url 'cart' %}" class="btn btn-warning mt-3">{% trans "Return to cart" %}</a>
 </div>
 {% endblock %}

@@ -282,6 +282,90 @@ msgstr "Respuesta"
 msgid "You must provide an endpoint URL."
 msgstr "Debes ingresar una URL de endpoint."
 
+msgid "Pay with Mercado Pago"
+msgstr "Pagar con Mercado Pago"
+
+msgid "Payment service is temporarily unavailable."
+msgstr "El servicio de pagos no está disponible temporalmente."
+
+msgid "Order summary"
+msgstr "Resumen del pedido"
+
+msgid "Preference"
+msgstr "Preferencia"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Payment ID"
+msgstr "ID de pago"
+
+msgid "Unit price"
+msgstr "Precio unitario"
+
+msgid "Subtotal"
+msgstr "Subtotal"
+
+msgid "View invoice"
+msgstr "Ver factura"
+
+msgid "My orders"
+msgstr "Mis pedidos"
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Invoice"
+msgstr "Factura"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "You have not completed any orders yet."
+msgstr "Aún no has completado ningún pedido."
+
+msgid "Order"
+msgstr "Pedido"
+
+msgid "Created on"
+msgstr "Creado el"
+
+msgid "Status detail"
+msgstr "Detalle del estado"
+
+msgid "Back to orders"
+msgstr "Volver a pedidos"
+
+msgid "Payment processor is not configured."
+msgstr "El procesador de pagos no está configurado."
+
+msgid "There was an error creating the payment preference."
+msgstr "Ocurrió un error al crear la preferencia de pago."
+
+msgid "Payment information is missing."
+msgstr "Falta información del pago."
+
+msgid "Order not found."
+msgstr "Pedido no encontrado."
+
+msgid "Your payment is pending confirmation."
+msgstr "Tu pago está pendiente de confirmación."
+
+msgid "Orders"
+msgstr "Pedidos"
+
+msgid "Pending"
+msgstr "Pendiente"
+
+msgid "Approved"
+msgstr "Aprobado"
+
+msgid "Rejected"
+msgstr "Rechazado"
+
+msgid "Cancelled"
+msgstr "Cancelado"
+
 msgid "About us - Online Store"
 msgstr "Nosotros - Tienda en línea"
 
